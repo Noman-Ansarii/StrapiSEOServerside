@@ -1,0 +1,64 @@
+{
+  "kind": "collectionType",
+  "collectionName": "posts",
+  "info": {
+    "singularName": "post",
+    "pluralName": "posts",
+    "displayName": "Post",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "PostTile": {
+      "type": "string",
+      "required": true
+    },
+    "PostMetaDescription": {
+      "type": "text",
+      "required": true
+    },
+    "BannerImage": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "Description": {
+      "type": "text",
+      "required": true
+    },
+    "Quotes": {
+      "type": "json",
+      "required": true
+    },
+    "MetaKeywords": {
+      "type": "json",
+      "required": true
+    },
+    "PostSlug": {
+      "type": "uid",
+      "required": true,
+      "targetField": "PostTile"
+    },
+    "PostMetaTitle": {
+      "type": "string",
+      "required": true
+    },
+    "contents": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::content.content",
+      "mappedBy": "post"
+    },
+    "category": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::category.category"
+    }
+  }
+}

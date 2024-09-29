@@ -485,6 +485,151 @@ export interface PluginUsersPermissionsUser
   };
 }
 
+export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
+  collectionName: 'categories';
+  info: {
+    singularName: 'category';
+    pluralName: 'categories';
+    displayName: 'Category';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    CategoryTitle: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    CategoryImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    CategorySlug: Schema.Attribute.UID<'CategoryTitle'> &
+      Schema.Attribute.Required;
+    subcategories: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::subcategorie.subcategorie'
+    >;
+    posts: Schema.Attribute.Relation<'oneToMany', 'api::post.post'>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::category.category'
+    >;
+  };
+}
+
+export interface ApiContentContent extends Struct.CollectionTypeSchema {
+  collectionName: 'contents';
+  info: {
+    singularName: 'content';
+    pluralName: 'contents';
+    displayName: 'Content';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    ContentTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    ContentMetaTitle: Schema.Attribute.String;
+    Description: Schema.Attribute.Text & Schema.Attribute.Required;
+    MetaDescription: Schema.Attribute.Text;
+    ContentImage: Schema.Attribute.Media<'images', true> &
+      Schema.Attribute.Required;
+    Quotes: Schema.Attribute.JSON & Schema.Attribute.Required;
+    MetaKeywords: Schema.Attribute.JSON;
+    ContentSlug: Schema.Attribute.UID<'ContentTitle'>;
+    post: Schema.Attribute.Relation<'manyToOne', 'api::post.post'>;
+    subcategory: Schema.Attribute.Relation<
+      'manyToOne',
+      'api::subcategorie.subcategorie'
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::content.content'
+    >;
+  };
+}
+
+export interface ApiPostPost extends Struct.CollectionTypeSchema {
+  collectionName: 'posts';
+  info: {
+    singularName: 'post';
+    pluralName: 'posts';
+    displayName: 'Post';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    PostTile: Schema.Attribute.String & Schema.Attribute.Required;
+    PostMetaDescription: Schema.Attribute.Text & Schema.Attribute.Required;
+    BannerImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    Description: Schema.Attribute.Text & Schema.Attribute.Required;
+    Quotes: Schema.Attribute.JSON & Schema.Attribute.Required;
+    MetaKeywords: Schema.Attribute.JSON & Schema.Attribute.Required;
+    PostSlug: Schema.Attribute.UID<'PostTile'> & Schema.Attribute.Required;
+    PostMetaTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    contents: Schema.Attribute.Relation<'oneToMany', 'api::content.content'>;
+    category: Schema.Attribute.Relation<'oneToOne', 'api::category.category'>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::post.post'>;
+  };
+}
+
+export interface ApiSubcategorieSubcategorie
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'subcategories';
+  info: {
+    singularName: 'subcategorie';
+    pluralName: 'subcategories';
+    displayName: 'Subcategorie';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
+    SubCategoryTitle: Schema.Attribute.String & Schema.Attribute.Required;
+    SubcategorySlug: Schema.Attribute.UID<'SubCategoryTitle'> &
+      Schema.Attribute.Required;
+    contents: Schema.Attribute.Relation<'oneToMany', 'api::content.content'>;
+    createdAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    publishedAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::subcategorie.subcategorie'
+    >;
+  };
+}
+
 export interface AdminPermission extends Struct.CollectionTypeSchema {
   collectionName: 'admin_permissions';
   info: {
@@ -860,6 +1005,10 @@ declare module '@strapi/strapi' {
       'plugin::users-permissions.permission': PluginUsersPermissionsPermission;
       'plugin::users-permissions.role': PluginUsersPermissionsRole;
       'plugin::users-permissions.user': PluginUsersPermissionsUser;
+      'api::category.category': ApiCategoryCategory;
+      'api::content.content': ApiContentContent;
+      'api::post.post': ApiPostPost;
+      'api::subcategorie.subcategorie': ApiSubcategorieSubcategorie;
       'admin::permission': AdminPermission;
       'admin::user': AdminUser;
       'admin::role': AdminRole;
