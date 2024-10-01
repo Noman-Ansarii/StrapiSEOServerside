@@ -537,7 +537,6 @@ export interface ApiContentContent extends Struct.CollectionTypeSchema {
   attributes: {
     ContentTitle: Schema.Attribute.String & Schema.Attribute.Required;
     ContentMetaTitle: Schema.Attribute.String;
-    Description: Schema.Attribute.Text & Schema.Attribute.Required;
     MetaDescription: Schema.Attribute.Text;
     ContentImage: Schema.Attribute.Media<'images', true> &
       Schema.Attribute.Required;
@@ -549,6 +548,7 @@ export interface ApiContentContent extends Struct.CollectionTypeSchema {
       'manyToOne',
       'api::subcategorie.subcategorie'
     >;
+    Description: Schema.Attribute.Blocks & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
@@ -579,13 +579,13 @@ export interface ApiPostPost extends Struct.CollectionTypeSchema {
     PostTile: Schema.Attribute.String & Schema.Attribute.Required;
     PostMetaDescription: Schema.Attribute.Text & Schema.Attribute.Required;
     BannerImage: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
-    Description: Schema.Attribute.Text & Schema.Attribute.Required;
     Quotes: Schema.Attribute.JSON & Schema.Attribute.Required;
     MetaKeywords: Schema.Attribute.JSON & Schema.Attribute.Required;
     PostSlug: Schema.Attribute.UID<'PostTile'> & Schema.Attribute.Required;
     PostMetaTitle: Schema.Attribute.String & Schema.Attribute.Required;
     contents: Schema.Attribute.Relation<'oneToMany', 'api::content.content'>;
     category: Schema.Attribute.Relation<'oneToOne', 'api::category.category'>;
+    Description: Schema.Attribute.Blocks & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;
